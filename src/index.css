@@ -32,18 +32,16 @@ body {
   color: white; /* Default text color for better visibility on dark backgrounds */
 }
 
-/* Classes for alternate coloring with 6 row repeating pattern */
-.hex-row:nth-child(6n+1) .hexagon, .hex-row:nth-child(6n+4) .hexagon {
+.hex-row-color-0 {
   background-color: rgb(101,77,53);
 }
 
-.hex-row:nth-child(6n+2) .hexagon, .hex-row:nth-child(6n+5) .hexagon {
+.hex-row-color-1 {
   background-color: rgb(140,122,104);
 }
 
-.hex-row:nth-child(6n+3) .hexagon, .hex-row:nth-child(6n+6) .hexagon {
+.hex-row-color-2 {
   background-color: rgb(188,176,164);
-  color: black; /* Text color black for visibility on white background */
 }
 
 .chess-piece {
@@ -102,9 +100,9 @@ body {
 }
 
 .hexagon-selected {
-  box-shadow: inset 0 0 0 1000px rgba(0, 128, 255, 0.5); /* Apply a yellow overlay */
+  box-shadow: inset 0 0 0 1000px rgba(0, 128, 255, 0.3); /* Apply a yellow overlay */
 }
 
 .hexagon-possible {
-  box-shadow: inset 0 0 0 1000px rgba(128, 128, 0, 0.5); /* Apply a yellow overlay */
+  box-shadow: inset 0 0 0 1000px rgba(208, 128, 0, 0.4); /* Apply a yellow overlay */
 }

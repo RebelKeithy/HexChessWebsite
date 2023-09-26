@@ -7,7 +7,7 @@ function Hexagon({ piece, color, onClick, isSelected, isPossible, row, col }) {
         console.log("Error")
     }
     return (
-        <div className={`hexagon ${color} ${isSelected ? 'hexagon-selected' : ''} ${isPossible ? 'hexagon-possible' : ''}`} onClick={onClick} title={`(${coords.u}, ${coords.v}, ${coords.d})\n(${coords.row}, ${coords.col})`}>
+        <div className={`hexagon hex-row-color-${row%3} ${color} ${isSelected ? 'hexagon-selected' : ''} ${isPossible ? 'hexagon-possible' : ''}`} onClick={onClick} title={`(${coords.u}, ${coords.v}, ${coords.d})\n(${coords.row}, ${coords.col})`}>
             {piece && <div className={`chess-piece chess-${piece}-${color}`} />}
         </div>
     );

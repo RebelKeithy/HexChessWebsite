@@ -98,10 +98,11 @@ function isPossible(moves, row, col) {
     return moves.some(move => move.row === row && move.col === col)
 }
 
-function Board({gameId, playerId}) {
+function Board({gameId, playerId, playerColor}) {
     const [boardState, setBoardState] = useState(generateInitialState());
     const [selectedHexagon, setSelectedHexagon] = useState(null);
     const [updateCount, setUpdateCount] = useState(0);
+    const [highlighted, setHighlighted] = useState([]);
 
     useEffect(() => {
         getGameState(gameId, playerId).then(
@@ -120,6 +121,15 @@ function Board({gameId, playerId}) {
                     }
                 })
                 setBoardState(board)
+                if (result.moves.length === 0) {
+                    setHighlighted([])
+                } else {
+                    const move = result.moves.slice(-1)[0]
+                    const moveArray = move.substring(1, move.length - 1).split(',').map(Number)
+                    const from = Coordinate.fromCartesian(moveArray[0], moveArray[1])
+                    const to = Coordinate.fromCartesian(moveArray[2], moveArray[3])
+                    setHighlighted([from, to])
+                }
             }
         )
     }, [updateCount, gameId, playerId]);
@@ -147,6 +157,7 @@ function Board({gameId, playerId}) {
                     setUpdateCount(updateCount + 1)
                 }
             )
+            setHighlighted([from, coords])
             setSelectedHexagon(null)
         }
         else if (selectedHexagon && selectedHexagon.row === row && selectedHexagon.col === col) {
@@ -157,7 +168,6 @@ function Board({gameId, playerId}) {
         }
     }
 
-    let playerColor = 'white'
     let isFlipped = playerColor === 'black';
 
     return (
@@ -172,17 +182,16 @@ function Board({gameId, playerId}) {
                             // If flipped, adjust the column index, otherwise use as is
                             let adjustedColIndex = isFlipped ? boardState[adjustedRowIndex].length - 1 - colIndex : colIndex;
                             let hexagon = boardState[adjustedRowIndex][adjustedColIndex];
-
+                            const isSelected = selectedHexagon?.row === adjustedRowIndex && selectedHexagon?.col === adjustedColIndex;
+                            const isHighlighted = highlighted.some(coord => coord.row === adjustedRowIndex && coord.col === adjustedColIndex)
+                            const possible = isPossible(moves, adjustedRowIndex, adjustedColIndex)
                             return (
                                 <Hexagon
                                     key={colIndex}
                                     piece={hexagon.piece}
                                     color={hexagon.color}
-                                    isSelected={
-                                        selectedHexagon?.row === adjustedRowIndex &&
-                                        selectedHexagon?.col === adjustedColIndex
-                                    }
-                                    isPossible={isPossible(moves, adjustedRowIndex, adjustedColIndex)}
+                                    isSelected={isSelected || isHighlighted}
+                                    isPossible={possible}
                                     row={adjustedRowIndex}
                                     col={adjustedColIndex}
                                         onClick={() => handleClick(adjustedRowIndex, adjustedColIndex)}
