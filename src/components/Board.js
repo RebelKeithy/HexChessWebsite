@@ -105,33 +105,35 @@ function Board({gameId, playerId, playerColor}) {
     const [highlighted, setHighlighted] = useState([]);
 
     useEffect(() => {
-        getGameState(gameId, playerId).then(
-            (result) => {
-                const rowLengths = generatePattern(6)
-                var rowIndex = 0
-                const board = []
-                var row = []
-                // For each character in board string, set the piece and color
-                result.board.split('').forEach((piece, index) => {
-                    row.push(deserializePiece(piece))
-                    if (row.length === rowLengths[rowIndex]) {
-                        board.push(row)
-                        row = []
-                        rowIndex++
+        if (gameId != null && playerId != null) {
+            getGameState(gameId, playerId).then(
+                (result) => {
+                    const rowLengths = generatePattern(6)
+                    var rowIndex = 0
+                    const board = []
+                    var row = []
+                    // For each character in board string, set the piece and color
+                    result.board.split('').forEach((piece, index) => {
+                        row.push(deserializePiece(piece))
+                        if (row.length === rowLengths[rowIndex]) {
+                            board.push(row)
+                            row = []
+                            rowIndex++
+                        }
+                    })
+                    setBoardState(board)
+                    if (result.moves.length === 0) {
+                        setHighlighted([])
+                    } else {
+                        const move = result.moves.slice(-1)[0]
+                        const moveArray = move.substring(1, move.length - 1).split(',').map(Number)
+                        const from = Coordinate.fromCartesian(moveArray[0], moveArray[1])
+                        const to = Coordinate.fromCartesian(moveArray[2], moveArray[3])
+                        setHighlighted([from, to])
                     }
-                })
-                setBoardState(board)
-                if (result.moves.length === 0) {
-                    setHighlighted([])
-                } else {
-                    const move = result.moves.slice(-1)[0]
-                    const moveArray = move.substring(1, move.length - 1).split(',').map(Number)
-                    const from = Coordinate.fromCartesian(moveArray[0], moveArray[1])
-                    const to = Coordinate.fromCartesian(moveArray[2], moveArray[3])
-                    setHighlighted([from, to])
                 }
-            }
-        )
+            )
+        }
     }, [updateCount, gameId, playerId]);
 
     var moves = []
@@ -151,12 +153,14 @@ function Board({gameId, playerId, playerColor}) {
                 boardState[row][col] = boardState[selectedHexagon.row][selectedHexagon.col]
             }
             boardState[selectedHexagon.row][selectedHexagon.col] = {piece: null, color: null}
-            move(gameId, playerId, from, coords).then(
-                (result) => {
-                    console.log(result)
-                    setUpdateCount(updateCount + 1)
-                }
-            )
+            if(gameId !== null && playerId !== null) {
+                move(gameId, playerId, from, coords).then(
+                    (result) => {
+                        console.log(result)
+                        setUpdateCount(updateCount + 1)
+                    }
+                )
+            }
             setHighlighted([from, coords])
             setSelectedHexagon(null)
         }
