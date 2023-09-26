@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/hexchesswebsite/static/css/main.4cc3967b.css",
+    "main.js": "/hexchesswebsite/static/js/main.40add34a.js",
+    "static/js/787.b3e1ba1a.chunk.js": "/hexchesswebsite/static/js/787.b3e1ba1a.chunk.js",
+    "static/media/Chess_Pieces_Sprite.svg": "/hexchesswebsite/static/media/Chess_Pieces_Sprite.728555525e4631975b06.svg",
+    "index.html": "/hexchesswebsite/index.html",
+    "main.4cc3967b.css.map": "/hexchesswebsite/static/css/main.4cc3967b.css.map",
+    "main.40add34a.js.map": "/hexchesswebsite/static/js/main.40add34a.js.map",
+    "787.b3e1ba1a.chunk.js.map": "/hexchesswebsite/static/js/787.b3e1ba1a.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4cc3967b.css",
+    "static/js/main.40add34a.js"
+  ]
+}
