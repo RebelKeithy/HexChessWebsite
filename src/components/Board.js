@@ -1,9 +1,9 @@
 // src/components/Board.js
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Hexagon from './Hexagon';
 import {possibleMoves} from "../helpers/PossibleMoves";
 import {Coordinate} from "../helpers/Coords";
-import {getGameState} from "../clients/gameClient";
+import {getGameState, move} from "../clients/gameClient";
 
 function generatePattern(n) {
     let pattern = [];
@@ -85,7 +85,7 @@ function deserializePiece(piece) {
     })[piece.toUpperCase()] || null;
     return {
         piece: pieceType,
-        color: piece === piece.toLowerCase() ? 'black' : 'white'
+        color: piece === ' ' ? null : piece === piece.toLowerCase() ? 'black' : 'white'
     }
 }
 
@@ -98,29 +98,31 @@ function isPossible(moves, row, col) {
     return moves.some(move => move.row === row && move.col === col)
 }
 
-function Board() {
+function Board({gameId, playerId}) {
     const [boardState, setBoardState] = useState(generateInitialState());
     const [selectedHexagon, setSelectedHexagon] = useState(null);
+    const [updateCount, setUpdateCount] = useState(0);
 
-    // const promise = getGameState()
-    // promise.then(
-    //     (result) => {
-    //         const rowLengths = generatePattern(6)
-    //         var rowIndex = 0
-    //         const board = []
-    //         var row = []
-    //         // For each character in board string, set the piece and color
-    //         result.board.split('').forEach((piece, index) => {
-    //             row.push(deserializePiece(piece))
-    //             if (row.length === rowLengths[rowIndex]) {
-    //                 board.push(row)
-    //                 row = []
-    //                 rowIndex++
-    //             }
-    //         })
-    //         setBoardState(boardState)
-    //     }
-    // )
+    useEffect(() => {
+        getGameState(gameId, playerId).then(
+            (result) => {
+                const rowLengths = generatePattern(6)
+                var rowIndex = 0
+                const board = []
+                var row = []
+                // For each character in board string, set the piece and color
+                result.board.split('').forEach((piece, index) => {
+                    row.push(deserializePiece(piece))
+                    if (row.length === rowLengths[rowIndex]) {
+                        board.push(row)
+                        row = []
+                        rowIndex++
+                    }
+                })
+                setBoardState(board)
+            }
+        )
+    }, [updateCount, gameId, playerId]);
 
     var moves = []
     if (selectedHexagon) {
@@ -132,12 +134,19 @@ function Board() {
     const handleClick = (row, col) => {
         var coords = Coordinate.fromCartesian(row, col)
         if (selectedHexagon && isPossible(moves, row, col)) {
+            var from = Coordinate.fromCartesian(selectedHexagon.row, selectedHexagon.col)
             if (boardState[selectedHexagon.row][selectedHexagon.col].piece === 'pawn' && (coords.u === 10 || coords.d === 0)) {
                 boardState[row][col] = {piece: 'queen', color: 'white'}
             } else {
                 boardState[row][col] = boardState[selectedHexagon.row][selectedHexagon.col]
             }
             boardState[selectedHexagon.row][selectedHexagon.col] = {piece: null, color: null}
+            move(gameId, playerId, from, coords).then(
+                (result) => {
+                    console.log(result)
+                    setUpdateCount(updateCount + 1)
+                }
+            )
             setSelectedHexagon(null)
         }
         else if (selectedHexagon && selectedHexagon.row === row && selectedHexagon.col === col) {

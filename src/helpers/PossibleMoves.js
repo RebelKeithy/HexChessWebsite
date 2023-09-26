@@ -11,7 +11,7 @@ const PIECE_FUNCTIONS = {
 
 export function possibleMoves(boardState, coord) {
     const piece = boardState[coord.row][coord.col]
-    if (piece.color === 'white' || true) {
+    if (piece.color !== null) {
         const func = PIECE_FUNCTIONS[piece.piece]
         if (func) {
             return func(boardState, coord)
@@ -55,25 +55,25 @@ function isStartingPawnCoord(piece, coord) {
 
 function possibleMovesPawn(boardState, coord) {
     const moves = [  ]
-    var reverse = 1
+    var direction = 1
     if(boardState[coord.row][coord.col].color === 'black') {
-        reverse = -1
+        direction = -1
     }
-    var move = coord.moveOrtho('u', reverse)
-    if (move.valid() && !hasEnemy(boardState, coord, move) && !hasFriendly(boardState, coord, move)) {
+    var move = coord.moveOrtho('u', direction)
+    if (validMove(boardState, coord, move) && !hasEnemy(boardState, coord, move)) {
         moves.push(move)
         if (isStartingPawnCoord(boardState[coord.row][coord.col], coord)) {
-            move = coord.moveOrtho('u', 2 * reverse)
-            if (move.valid() && !hasEnemy(boardState, coord, move) && !hasFriendly(boardState, coord, move)) {
+            move = coord.moveOrtho('u', 2 * direction)
+            if (validMove(boardState, coord, move) && !hasEnemy(boardState, coord, move)) {
                 moves.push(move)
             }
         }
     }
-    move = coord.moveOrtho('l', -1 * reverse)
+    move = coord.moveOrtho('l', -direction)
     if(move.valid() && hasEnemy(boardState, coord, move)) {
         moves.push(move)
     }
-    move = coord.moveOrtho('r', -1 * reverse)
+    move = coord.moveOrtho('r', -direction)
     if(move.valid() && hasEnemy(boardState, coord, move)) {
         moves.push(move)
     }

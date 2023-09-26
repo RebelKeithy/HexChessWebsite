@@ -9,6 +9,16 @@ export const getGameState = async (gameId, playerId) => {
     return data;
 }
 
-export const getTestGameState = async () => {
-    return getGameState("a0f639b8-0616-4fdb-8ca7-ae161afff27c", "6d7bf375-18aa-4a13-91b6-c18505397f3f")
+/*
+ * Function to call the API to make a move. Move query param is formatted as a string "(x,y,x2,y2)"
+ * Move is a post request
+ */
+export const move = async (gameId, playerId, from, to) => {
+    const moveString = `(${from.row},${from.col},${to.row},${to.col})`
+    const response = await fetch(`https://5p7bdpsxzi.execute-api.us-east-1.amazonaws.com/prod/v1/games/${gameId}/move/?playerId=${playerId}&move=${moveString}`, {
+        method: 'POST'
+    });
+    const data = await response.json();
+    console.log(data)
+    return data;
 }
