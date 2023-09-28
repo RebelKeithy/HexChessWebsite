@@ -98,7 +98,7 @@ function isPossible(moves, row, col) {
     return moves.some(move => move.row === row && move.col === col)
 }
 
-function Board({gameId, playerId, playerColor}) {
+function Board({gameId, playerId, playerColor, count}) {
     const [boardState, setBoardState] = useState(generateInitialState());
     const [selectedHexagon, setSelectedHexagon] = useState(null);
     const [updateCount, setUpdateCount] = useState(0);
@@ -134,7 +134,7 @@ function Board({gameId, playerId, playerColor}) {
                 }
             )
         }
-    }, [updateCount, gameId, playerId]);
+    }, [updateCount, gameId, playerId, count]);
 
     var moves = []
     if (selectedHexagon) {
