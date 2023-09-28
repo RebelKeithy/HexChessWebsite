@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/HexChessWebsite/static/css/main.9039325f.css",
-    "main.js": "/HexChessWebsite/static/js/main.e1828408.js",
+    "main.js": "/HexChessWebsite/static/js/main.54fb5743.js",
     "static/js/787.b3e1ba1a.chunk.js": "/HexChessWebsite/static/js/787.b3e1ba1a.chunk.js",
     "static/media/Chess_Pieces_Sprite.svg": "/HexChessWebsite/static/media/Chess_Pieces_Sprite.728555525e4631975b06.svg",
     "index.html": "/HexChessWebsite/index.html",
     "main.9039325f.css.map": "/HexChessWebsite/static/css/main.9039325f.css.map",
-    "main.e1828408.js.map": "/HexChessWebsite/static/js/main.e1828408.js.map",
+    "main.54fb5743.js.map": "/HexChessWebsite/static/js/main.54fb5743.js.map",
     "787.b3e1ba1a.chunk.js.map": "/HexChessWebsite/static/js/787.b3e1ba1a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.9039325f.css",
-    "static/js/main.e1828408.js"
+    "static/js/main.54fb5743.js"
   ]
 }
